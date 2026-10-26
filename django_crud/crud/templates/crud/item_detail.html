@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.title }}{% endblock %}
+{% block content %}
+<h2>{{ object.title }}</h2>
+<p>{{ object.description|linebreaks }}</p>
+<ul class="list-unstyled">
+  <li><b>Цена:</b> {{ object.price }}</li>
+  <li><b>Активен:</b> {{ object.is_active|yesno:"Да,Нет" }}</li>
+  <li><b>Создан:</b> {{ object.created_at|date:"d.m.Y H:i" }}</li>
+  <li><b>Обновлён:</b> {{ object.updated_at|date:"d.m.Y H:i" }}</li>
+</ul>
+<a class="btn btn-warning" href="{% url 'crud:update' object.pk %}">Изменить</a>
+<a class="btn btn-danger" href="{% url 'crud:delete' object.pk %}">Удалить</a>
+<a class="btn btn-secondary" href="{% url 'crud:list' %}">Назад</a>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Список{% endblock %}
+{% block content %}
+<form class="d-flex mb-3" method="get">
+  <input class="form-control me-2" name="q" value="{{ q }}" placeholder="Поиск по названию">
+  <button class="btn btn-outline-primary">Найти</button>
+</form>
+<table class="table table-striped align-middle">
+  <thead><tr><th>#</th><th>Название</th><th>Цена</th><th>Активен</th><th>Создан</th><th></th></tr></thead>
+  <tbody>
+  {% for item in items %}
+    <tr>
+      <td>{{ item.pk }}</td>
+      <td><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></td>
+      <td>{{ item.price }}</td>
+      <td>{{ item.is_active|yesno:"Да,Нет" }}</td>
+      <td>{{ item.created_at|date:"d.m.Y H:i" }}</td>
+      <td class="text-end">
+        <a class="btn btn-sm btn-warning" href="{% url 'crud:update' item.pk %}">Изменить</a>
+        <a class="btn btn-sm btn-danger" href="{% url 'crud:delete' item.pk %}">Удалить</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6" class="text-center text-muted">Записей нет</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% if is_paginated %}
+<nav><ul class="pagination">
+  {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ q }}">«</a></li>{% endif %}
+  <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+  {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ q }}">»</a></li>{% endif %}
+</ul></nav>
+{% endif %}
+{% endblock %}
