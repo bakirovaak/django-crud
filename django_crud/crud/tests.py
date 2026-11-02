@@ -37,3 +37,9 @@ class ItemCrudTests(TestCase):
         r = self.client.post(reverse('crud:delete', args=[self.item.pk]))
         self.assertRedirects(r, reverse('crud:list'))
         self.assertFalse(Item.objects.exists())
+
+
+    class SimpleTest(TestCase):
+       def test_list_page_opens(self):
+           response = self.client.get('/')
+           self.assertEqual(response.status_code, 200)
